@@ -1,5 +1,13 @@
+# Point both corepack (pnpm download) and pnpm (deps) at a reachable registry.
+# Defaults to the public npm registry; override for a mirror, e.g.:
+#   --build-arg NPM_REGISTRY=http://registry.<org>:4873
+ARG NPM_REGISTRY=https://registry.npmjs.org
+
 FROM node:24 AS build
 LABEL maintainer="Penpot <docker@penpot.app>"
+ARG NPM_REGISTRY
+ENV COREPACK_NPM_REGISTRY=$NPM_REGISTRY \
+    npm_config_registry=$NPM_REGISTRY
 WORKDIR /src
 COPY mcp/package.json mcp/pnpm-workspace.yaml mcp/pnpm-lock.yaml ./
 COPY mcp/packages ./packages
