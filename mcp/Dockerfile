@@ -1,9 +1,10 @@
 FROM node:24 AS build
 LABEL maintainer="Penpot <docker@penpot.app>"
 WORKDIR /src
-RUN npm install -g pnpm@12.3.4
 COPY mcp/package.json mcp/pnpm-workspace.yaml mcp/pnpm-lock.yaml ./
 COPY mcp/packages ./packages
+# corepack ships with node:24 and pins pnpm from package.json's packageManager
+RUN corepack enable && corepack prepare pnpm@12.3.4 --activate
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter mcp-common run build
 RUN pnpm --filter mcp-server run build
