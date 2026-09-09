@@ -12,6 +12,7 @@ import { HighLevelOverviewTool } from "./tools/HighLevelOverviewTool";
 import { PenpotApiInfoTool } from "./tools/PenpotApiInfoTool";
 import { ExportShapeTool } from "./tools/ExportShapeTool";
 import { ImportImageTool } from "./tools/ImportImageTool";
+import { RemoteImageUploadTool } from "./tools/RemoteImageUploadTool";
 import { CljsReplTool } from "./tools/CljsReplTool";
 import { ImportPenpotFileTool } from "./tools/ImportPenpotFileTool";
 import { CljsCompilerOutputTool } from "./tools/CljsCompilerOutputTool";
@@ -263,6 +264,9 @@ export class PenpotMcpServer {
             new PenpotApiInfoTool(this, this.apiDocs),
             new ExportShapeTool(this),
         ];
+        // remote image upload works in both local and remote modes (data arrives
+        // from the MCP client, not from the server's file system)
+        toolInstances.push(new RemoteImageUploadTool(this));
         if (this.isFileSystemAccessEnabled()) {
             toolInstances.push(new ImportImageTool(this));
         }
@@ -452,7 +456,12 @@ export class PenpotMcpServer {
     async start(): Promise<void> {
         const { default: express } = await import("express");
         this.app = express();
-        this.app.use(express.json());
+        // increase the JSON body limit so the image_remote_upload tool can receive
+        // base64 image data. base64 is ~4/3 the decoded size; doubling covers JSON and
+        // HTTP overhead with a safety margin.
+        const maxUploadBytes = this.configLoader.getMaxUploadBytes();
+        const jsonBodyLimit = Math.ceil(maxUploadBytes * 2);
+        this.app.use(express.json({ limit: jsonBodyLimit }));
 
         this.setupHttpEndpoints();
 

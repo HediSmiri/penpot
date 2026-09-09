@@ -267,6 +267,7 @@ The Penpot MCP server can be configured using environment variables.
 | `PENPOT_MCP_REPL_PORT`                           | Port for the REPL server (development/debugging)                           | `4403`         |
 | `PENPOT_MCP_REPL_ENABLE`                         | Explicitly enable/disable the REPL server. Set to `true` to enable. When unset, defaults to the value of `PENPOT_MCP_DEVENV`. | (unset)        |
 | `PENPOT_MCP_REMOTE_MODE`                         | Enable remote mode (disables file system access). Set to `true` to enable. | `false`        |
+| `PENPOT_MCP_MAX_UPLOAD_BYTES`                    | Maximum decoded image size (bytes) accepted by the `image_remote_upload` tool. Clamped to Penpot's default media maximum (30 MiB). | `20971520` (20 MiB) |
 | `PENPOT_MCP_DEVENV`                              | Enable Penpot development environment tools in local single-user mode. Set to `true` to enable. | `false`        |
 | `PENPOT_MCP_TOOL_TIMEOUT_S`                      | Timeout, in seconds, for tool calls dispatched to the Penpot plugin        | `120`          |
 | `PENPOT_MCP_EXPORT_SHAPE_MAX_PARALLEL_REQUESTS`  | Maximum number of parallel export shape requests (multi-user mode only).   | `0` (no limit) |

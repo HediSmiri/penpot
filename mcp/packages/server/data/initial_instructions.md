@@ -96,7 +96,7 @@ Annotations: Don't add text elements to the design that just repeat a shape's na
 
 The `Image` type is a legacy type. Images are now typically embedded in a `Fill`, with `fillImage` set to an
 `ImageData` object, i.e. the `fills` property of of a shape (e.g. a `Rectangle`) will contain a fill where `fillImage` is set.
-Use the `export_shape` and `import_image` tools to export and import images.
+Use the `export_shape` and `import_image` tools to export and import images. When the image data is only available as base64 (e.g. received from the caller rather than the server's file system), use `image_remote_upload` instead — it works in both local and remote modes.
 
 # Layout Systems
 
