@@ -3,6 +3,8 @@
 node_modules
 dist
 *.tgz
+*.tar
+*.tar.gz
 *.bak
 *.orig
 temp
