@@ -7,7 +7,8 @@ FROM node:24 AS build
 LABEL maintainer="Penpot <docker@penpot.app>"
 ARG NPM_REGISTRY
 ENV COREPACK_NPM_REGISTRY=$NPM_REGISTRY \
-    npm_config_registry=$NPM_REGISTRY
+    npm_config_registry=$NPM_REGISTRY \
+    NODE_OPTIONS=--dns-result-order=ipv4first
 WORKDIR /src
 COPY mcp/package.json mcp/pnpm-workspace.yaml mcp/pnpm-lock.yaml ./
 COPY mcp/packages ./packages
